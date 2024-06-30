@@ -11,10 +11,10 @@ async function checkweather(city) {
 
   console.log(data);
 
-  document.querySelector(".city").innerHTML = data.name;
-  document.querySelector(".temp").innerHTML = Math.round(data.main.temp) + "°c";
-  document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
-  document.querySelector(".wind").innerHTML = data.wind.speed + " km/h";
+  document.querySelector(".city").innerHTML = data.name === undefined ? "City not found" : data.name;
+  document.querySelector(".temp").innerHTML = data.name === undefined ? '--°c': Math.round(data.main.temp) + "°c";
+  document.querySelector(".humidity").innerHTML =  data.name === undefined ? '--%': data.main.humidity + "%";
+  document.querySelector(".wind").innerHTML = data.name === undefined ? '--km/h': data.wind.speed + " km/h";
 
   if (data.weather[0].main == "Clouds") {
     weatherIcon.src = "images/clouds.png";
@@ -32,7 +32,11 @@ async function checkweather(city) {
 }
 
 function handleSearch() {
-  checkweather(searchBox.value);
+  var city = searchBox.value;
+  if (city == "" || city == null) {
+    city="New York";
+  }
+  checkweather(city);
 }
 
 searchBtn.addEventListener("click", handleSearch);
@@ -42,3 +46,7 @@ searchBox.addEventListener("keypress", (e) => {
     handleSearch();
   }
 });
+
+window.onload = function() {
+  handleSearch();
+}
